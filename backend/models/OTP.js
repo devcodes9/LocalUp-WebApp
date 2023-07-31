@@ -27,6 +27,10 @@ async function sendVerificationEmail(email, otp) {
       "Verification Email from LocalUp",
       otp
     );
+
+    if(!mailResponse){
+      throw "Problem sending verification email"
+    }
     console.log("Verification Email sent successfully: ", mailResponse);
   } catch (err) {
     console.log("Verification Email send failed: ", err);
