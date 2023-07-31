@@ -5,10 +5,12 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true
     },
     category: {
       type: String,
       required: true,
+      trim: true
     },
     description: {
       type: String,
@@ -28,6 +30,9 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String
+    }
   },
   { timestamps: true }
 );
