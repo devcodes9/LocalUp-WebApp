@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const OTP = require("../models/OTP");
+const Store = require("../models/Store");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -114,8 +115,16 @@ const signup = async (req, res) => {
       email,
       contactNumber,
       password: hashedPassword,
-      role,
+      role
     });
+
+    if(user.role === "store-owner"){
+      const store = await Store.create({
+        name,
+        user: user._id
+      })
+      console.log("Store created: ", store);
+    }
 
     //return res
     return res.status(200).json({
