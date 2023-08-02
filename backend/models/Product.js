@@ -13,13 +13,17 @@ const productSchema = new mongoose.Schema(
       trim: true
     },
     description: {
-      type: String,
-      required: true,
+      type: String
     },
     price: {
       type: Number,
       required: true,
       min: 0,
+    },
+    store: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Store',
+      required: true
     },
     quantity: {
       type: Number,
