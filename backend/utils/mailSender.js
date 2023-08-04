@@ -21,7 +21,7 @@ const mailSender = async (email, title, body) => {
 
         return info;
     }catch (err) {
-        console.error("Error while sending OTP mail: ", err.message);
+        console.error("Error while sending OTP mail:", err.message);
     }
 }
 
