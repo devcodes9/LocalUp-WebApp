@@ -1,5 +1,10 @@
 import React from "react";
 import { Button } from "flowbite-react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignUpPage from "./components/SignUpPage";
+import Header from "./components/Header";
+import MainPage from "./components/MainPage";
+
 function App() {
   const url =
     process.env.NODE_ENV === "development"
@@ -8,8 +13,19 @@ function App() {
   console.log(url)
   return (
     <div>
-      <Button>LocalUp</Button>
+    <Router>
+    <div>
+      <Header />
+      {/* <MainPage /> */}
+      <Routes>
+        <Route exact path="/" element={<MainPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+      </Routes>
     </div>
+  </Router>
+  </div>
+
+
   );
 }
 
