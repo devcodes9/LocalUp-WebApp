@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const authRouter = require("./routes/authRouter");
 const productRouter = require("./routes/productRouter");
+const storeRouter = require("./routes/storeRouter");
+const invoiceRouter = require("./routes/invoiceRouter");
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ app.use(cookieParser());
 app.use(cors());
 app.use("/api/v1", authRouter);
 app.use("/api/v1/product", productRouter);
+app.use("/api/v1/store", storeRouter);
+app.use("/api/v1/invoice", invoiceRouter)
 
 const connect = async () => {
   try{

@@ -5,21 +5,31 @@ const StoreSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    products: [{
+    products: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
-    }],
-    invoices: [{
+        ref: "Product",
+      },
+    ],
+    invoices: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Invoice'
-    }]
+        ref: "Invoice",
+      },
+    ],
+    inquiries: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   { timestamps: true }
 );
