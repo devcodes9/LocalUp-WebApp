@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "flowbite-react";
+import { Flowbite } from "flowbite-react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUpPage from "./components/SignUpPage";
 import Header from "./components/Header";
@@ -12,11 +12,11 @@ function App() {
       : process.env.REACT_APP_BACKEND_URL_PRODUCTION;
   console.log(url)
   return (
-    <div>
+    <Flowbite>
+    <div className="dark:bg-cyan-800">
     <Router>
     <div>
       <Header />
-      {/* <MainPage /> */}
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignUpPage />} />
@@ -24,7 +24,7 @@ function App() {
     </div>
   </Router>
   </div>
-
+  </Flowbite>
 
   );
 }
