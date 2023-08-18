@@ -1,5 +1,5 @@
 'use client';
-import { Button, Navbar } from 'flowbite-react';
+import { Button, Navbar, DarkThemeToggle } from 'flowbite-react';
 import React from 'react';
 
 const Header = () => {
@@ -8,7 +8,7 @@ const Header = () => {
       fluid
       rounded
       style={{ backgroundColor: 'rgb(8,25,39)' }}
-      className='rounded-none'
+      className='rounded-none sticky top-0'
     >
       <Navbar.Brand
 
@@ -28,11 +28,12 @@ const Header = () => {
         {/* <Navbar.Link href="#" className='text-white h-[100%] flex items-center'>
           Contact
         </Navbar.Link> */}
+        <DarkThemeToggle />
         <Navbar.Link href="/signup" className='text-white'>
-          <Button>Register</Button>
+          <Button className="">Register</Button>
         </Navbar.Link>
         <Navbar.Link href="/signup" className='text-white'>
-          <Button>Login</Button>
+          <Button className="">Login</Button>
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
