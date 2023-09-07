@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUpPage from "./components/SignUpPage";
 import Header from "./components/Header";
 import MainPage from "./components/MainPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const url =
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </div>
   </Router>
