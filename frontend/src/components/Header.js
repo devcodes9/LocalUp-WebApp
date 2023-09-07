@@ -1,6 +1,7 @@
 'use client';
 import { Button, Navbar, DarkThemeToggle } from 'flowbite-react';
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -17,10 +18,10 @@ const Header = () => {
         <img
           alt="Flowbite React Logo"
           className="mr-3 h-6 sm:h-9"
-          src="/logo.png"
+          src="https://github.com/devcodes9/LocalUp-WebApp/assets/81856196/5727f22a-b313-448c-827f-656709622a2f"
         />
         <span className="self-center whitespace-nowrap text-xl text-white font-semibold dark:text-white">
-          Local WebApp
+          LocalUp 
         </span>
       </Navbar.Brand>
       <Navbar.Toggle />
@@ -29,12 +30,12 @@ const Header = () => {
           Contact
         </Navbar.Link> */}
         <DarkThemeToggle />
-        <Navbar.Link href="/signup" className='text-white'>
+        <Link to="/signup" className='text-white'>
           <Button className="">Register</Button>
-        </Navbar.Link>
-        <Navbar.Link href="/signup" className='text-white'>
+        </Link>
+        <Link to="/login" className='text-white'>
           <Button className="">Login</Button>
-        </Navbar.Link>
+        </Link>
       </Navbar.Collapse>
     </Navbar>
   )
