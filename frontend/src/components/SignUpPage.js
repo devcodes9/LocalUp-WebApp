@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToggleSwitch, Button } from "flowbite-react";
 import { Link } from 'react-router-dom'
+import axios from "axios";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -21,9 +22,31 @@ const SignUpPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+
+    try{
+      const config = {
+        headers: {
+          "Content-type":"application/json"
+        }
+      }
+
+      const {data} = await axios.post(
+        "http://localhost:8080/api/v1/signup",
+        {
+          formData
+        },
+        config
+        );
+        console.log(data)
+        localStorage.setItem('userInfo',JSON.stringify(data))
+    }
+
+    catch(error){
+      console.log("Error");
+    }
   };
   return (
     <div>
@@ -45,7 +68,7 @@ const SignUpPage = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create an account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
                 <div>
                   <label
                     for="name"
@@ -59,6 +82,8 @@ const SignUpPage = () => {
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Full Name"
+                    value={formData.name} 
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -75,21 +100,26 @@ const SignUpPage = () => {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
+                    value={formData.email} // Bind the value to formData.name
+                    onChange={handleChange}
                     required
                   />
                 </div>
                 <div>
                   <label
-                    for="phone"
+                    for="phoneNumber"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Phone number
                   </label>
                   <input
                     type="tel"
+                    name="phoneNumber"
                     id="phone"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder=""
+                    value={formData.phoneNumber} 
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
@@ -105,6 +135,8 @@ const SignUpPage = () => {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={formData.password} // Bind the value to formData.name
+                    onChange={handleChange}
                     required
                   />
                 </div>
