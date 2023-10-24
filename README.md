@@ -1,5 +1,7 @@
 # LocalUp - Web App for connecting buyers and local store owners(In progress)
-![LocalUp Logo](link_to_logo.png)
+<p align="center">
+  <img src="https://github.com/devcodes9/LocalUp-WebApp/assets/81856196/5727f22a-b313-448c-827f-656709622a2f" alt="LocalUp Logo">
+</p>
 
 LocalUp is a web application that simplifies the process of finding products in local shops, especially those not available on online stores. This q-commerce platform connects buyers with nearby store owners, providing transparency of product availability and easing access to desired items.
 
