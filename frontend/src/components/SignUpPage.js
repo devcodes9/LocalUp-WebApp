@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToggleSwitch, Button } from "flowbite-react";
 import { Link } from 'react-router-dom'
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useSendOTPMutation } from "../slices/usersApiSlice";
+import { setRegisterData } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast'
+import Loader from "../components/Loader";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -10,42 +16,56 @@ const SignUpPage = () => {
     password: "",
     phoneNumber: "",
   });
-
+  const { userInfo } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isToggled, setIsToggled] = useState(false);
-
+  const [otp, setOtp] = useState("");
   const handleToggleChange = () => {
     setIsToggled(!isToggled);
   };
-
+  const [sendOTP, { isLoading }] = useSendOTPMutation();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/')
+    } 
+  }, [navigate, userInfo]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log(formData);
 
     try{
-      const config = {
-        headers: {
-          "Content-type":"application/json"
-        }
-      }
-
-      const {data} = await axios.post(
-        "http://localhost:8080/api/v1/signup",
-        {
-          formData
-        },
-        config
-        );
-        console.log(data)
-        localStorage.setItem('userInfo',JSON.stringify(data))
+      // const config = {
+      //   headers: {
+      //     "Content-type":"application/json"
+      //   }
+      // }
+      // console.log(formData);
+      // const {data} = await axios.post(
+      //   "http://localhost:8080/api/v1/sendotp",
+        
+      //     {
+      //       "email": formData.email
+      //     }
+      //   ,
+      //   config
+      //   );
+      const email = formData?.email;
+      const res = await sendOTP({ email }).unwrap();
+      formData.role = isToggled ? 'store-owner' : 'buyer';
+      dispatch(setRegisterData({...formData }));
+      navigate("/sendOTP")
+      toast.success("OTP sent successfully")
     }
 
     catch(error){
-      console.log("Error");
+      toast.error(error?.data?.message || error.error);
     }
   };
   return (
@@ -170,6 +190,7 @@ const SignUpPage = () => {
                     </label>
                   </div>
                 </div>
+                {isLoading && <div className= 'text-center'><Loader /></div>}
                 <Button
                   type="submit"
                   className="w-full text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 "

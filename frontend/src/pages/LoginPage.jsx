@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToggleSwitch, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
 import axios from 'axios'
+import toast from 'react-hot-toast'
+import Loader from "../components/Loader";
 
 const SignUpPage = () => {
   // const [formData, setFormData] = useState({
@@ -13,31 +18,30 @@ const SignUpPage = () => {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+  
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/')
+    } 
+  }, [navigate, userInfo]);
+
   const submitHandler = async (e) => {
     e.preventDefault()
-    // console.log(email,password)
+    console.log(email,password)
 
-    try{
-      const config = {
-        headers: {
-          "Content-type":"application/json"
-        }
-      }
-
-      const {data} = await axios.post(
-        "/api/v1/login",
-        {
-          email,
-          password,
-        },
-        config
-        );
-        console.log(data)
-        localStorage.setItem('userInfo',JSON.stringify(data))
-    }
-
-    catch(error){
-      console.log("Error");
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log(res)
+      dispatch(setCredentials({...res}))
+      toast.success("Successfully logged in")
+      navigate('/')
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
     }
   }
   return (
@@ -97,6 +101,7 @@ const SignUpPage = () => {
                     required
                   />
                 </div>
+                {isLoading && <div className= 'text-center'><Loader /></div>}
                 <Button
                   type="submit"
                   className="w-full text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 "
