@@ -4,7 +4,7 @@ import FeatureCard from "./FeatureCard";
 const MainPage = () => {
   return (
     <div
-      className="h-[100vh]"
+      // className="h-[100vh]"
       // style={{ background: 'rgb(8,25,39)' }}
     >
       <div className="pt-[5%] w-[75%] m-auto">

@@ -5,6 +5,7 @@ import SignUpPage from "./components/SignUpPage";
 import Header from "./components/Header";
 import MainPage from "./components/MainPage";
 import LoginPage from "./pages/LoginPage";
+import ProductPage from "./components/ProductPage";
 
 function App() {
   const url =
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/product" element={<ProductPage/>} />
       </Routes>
     </div>
   </Router>
