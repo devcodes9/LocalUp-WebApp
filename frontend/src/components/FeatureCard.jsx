@@ -13,9 +13,7 @@ const FeatureCard = ({title, body}) => {
         </p>
       </h5>
       <p className="font-normal text-gray-700 dark:text-gray-400">
-        <p>
           {body}
-        </p>
       </p>
     </Card>
       {/* <div

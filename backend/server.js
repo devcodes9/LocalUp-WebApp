@@ -15,7 +15,12 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  preflightContinue: true,
+}));
+
 app.use("/api/v1", authRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/store", storeRouter);

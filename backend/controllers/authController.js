@@ -69,7 +69,7 @@ const signup = async (req, res) => {
   try {
     // data fetch from request's body
     const { name, email, contactNumber, password, role, otp } = req.body;
-    
+
     // validate data
     if (!name || !email || !password || !otp) {
       return res.status(403).json({
@@ -208,6 +208,29 @@ const login = async (req, res) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  //Emptying cookies
+ try{
+  res
+  .status(200)
+  .cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  })
+  .json({
+    success: true,
+    message: "Logged Out SuccesFully",
+  });
+ }catch(err){
+  return res.status(500).json({
+    success: false,
+    message: "Logout unsuccessful:" + err.message,
+  });
+ }
+};
+
 //change password
 
-module.exports = { sendOTP, signup, login };
+module.exports = { sendOTP, signup, login, logout };

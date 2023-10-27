@@ -1,30 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToggleSwitch, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../slices/usersApiSlice";
+import { setCredentials } from "../slices/authSlice";
+import axios from 'axios'
+import toast from 'react-hot-toast'
+import Loader from "../components/Loader";
 
 const SignUpPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  //   phoneNumber: "",
+  // });
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
 
-  const [isToggled, setIsToggled] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleToggleChange = () => {
-    setIsToggled(!isToggled);
-  };
+  const [login, { isLoading }] = useLoginMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+  
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/')
+    } 
+  }, [navigate, userInfo]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const submitHandler = async (e) => {
+    e.preventDefault()
+    console.log(email,password)
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(formData);
-  };
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log(res)
+      dispatch(setCredentials({...res}))
+      toast.success("Successfully logged in")
+      navigate('/')
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
+    }
+  }
   return (
     <div>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -45,10 +64,10 @@ const SignUpPage = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Login to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form onSubmit={submitHandler} className="space-y-4 md:space-y-6" action="#">
                 <div>
                   <label
-                    for="email"
+                    htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your email
@@ -59,12 +78,14 @@ const SignUpPage = () => {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
                 <div>
                   <label
-                    for="password"
+                    htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Password
@@ -75,9 +96,12 @@ const SignUpPage = () => {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
+                {isLoading && <div className= 'text-center'><Loader /></div>}
                 <Button
                   type="submit"
                   className="w-full text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 "

@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToggleSwitch, Button } from "flowbite-react";
 import { Link } from 'react-router-dom'
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useSendOTPMutation } from "../slices/usersApiSlice";
+import { setRegisterData } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast'
+import Loader from "../components/Loader";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -9,21 +16,57 @@ const SignUpPage = () => {
     password: "",
     phoneNumber: "",
   });
-
+  const { userInfo } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isToggled, setIsToggled] = useState(false);
-
+  const [otp, setOtp] = useState("");
   const handleToggleChange = () => {
     setIsToggled(!isToggled);
   };
-
+  const [sendOTP, { isLoading }] = useSendOTPMutation();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/')
+    } 
+  }, [navigate, userInfo]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+
+    try{
+      // const config = {
+      //   headers: {
+      //     "Content-type":"application/json"
+      //   }
+      // }
+      // console.log(formData);
+      // const {data} = await axios.post(
+      //   "http://localhost:8080/api/v1/sendotp",
+        
+      //     {
+      //       "email": formData.email
+      //     }
+      //   ,
+      //   config
+      //   );
+      const email = formData?.email;
+      const res = await sendOTP({ email }).unwrap();
+      formData.role = isToggled ? 'store-owner' : 'buyer';
+      dispatch(setRegisterData({...formData }));
+      navigate("/sendOTP")
+      toast.success("OTP sent successfully")
+    }
+
+    catch(error){
+      toast.error(error?.data?.message || error.error);
+    }
   };
   return (
     <div>
@@ -45,7 +88,7 @@ const SignUpPage = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create an account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
                 <div>
                   <label
                     for="name"
@@ -59,6 +102,8 @@ const SignUpPage = () => {
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Full Name"
+                    value={formData.name} 
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -75,21 +120,26 @@ const SignUpPage = () => {
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
+                    value={formData.email} // Bind the value to formData.name
+                    onChange={handleChange}
                     required
                   />
                 </div>
                 <div>
                   <label
-                    for="phone"
+                    for="phoneNumber"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Phone number
                   </label>
                   <input
                     type="tel"
+                    name="phoneNumber"
                     id="phone"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder=""
+                    value={formData.phoneNumber} 
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
@@ -105,6 +155,8 @@ const SignUpPage = () => {
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={formData.password} // Bind the value to formData.name
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -138,6 +190,7 @@ const SignUpPage = () => {
                     </label>
                   </div>
                 </div>
+                {isLoading && <div className= 'text-center'><Loader /></div>}
                 <Button
                   type="submit"
                   className="w-full text-white  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 "
