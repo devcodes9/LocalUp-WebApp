@@ -1,5 +1,5 @@
 const express = require('express');
-const { login, signup, sendOTP } = require('../controllers/authController');
+const { login, signup, sendOTP, logout } = require('../controllers/authController');
 const { auth, isBuyer, isAdmin, isStoreOwner } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/login', login);
 router.post('/signup', signup);
 router.post('/sendotp', sendOTP);
-
+router.get('/logout', logout);
 
 //testing protected routes for single middleware
 router.get("/test", auth, (req,res) =>{

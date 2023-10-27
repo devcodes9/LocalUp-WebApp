@@ -16,9 +16,9 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL,
   credentials: true,
-  preflightContinue: true,
+  methods: ["GET", "POST", "PUT", "DELETE"]
 }));
 
 app.use("/api/v1", authRouter);
