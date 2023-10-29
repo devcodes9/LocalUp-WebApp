@@ -7,6 +7,7 @@ import MainPage from "./components/MainPage";
 import LoginPage from "./pages/LoginPage";
 import OTPPage from "./pages/OTPPage";
 import ProductPage from "./components/ProductPage";
+import StoreInvoices from "./pages/StoreInvoices";
 
 function App() {
   const url =
@@ -26,6 +27,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/sendOTP" element={<OTPPage />} />
               <Route path="/Product" element={<ProductPage/>} />
+              <Route path="/invoices" element = {<StoreInvoices />} />
             </Routes>
           </div>
         </Router>
