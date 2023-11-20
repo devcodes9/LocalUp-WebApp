@@ -3,7 +3,8 @@ const Store = require("../models/Store");
 
 const createProduct = async (req, res) => {
   try {
-    const id = req.body.user_id;
+    console.log("Req:", req.user);
+    const id = req.user.id;
 
     const storeDoc = await Store.findOne({ user: id });
 

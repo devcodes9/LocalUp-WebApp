@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import MainPage from "./components/MainPage";
 import LoginPage from "./pages/LoginPage";
 import OTPPage from "./pages/OTPPage";
+import ProductPage from "./components/ProductPage";
+import StoreInvoices from "./pages/StoreInvoices";
 
 function App() {
   const url =
@@ -15,21 +17,22 @@ function App() {
 
   return (
     <Flowbite>
-    <div className="dark:bg-cyan-800">
-    <Router>
-    <div>
-      <Header />
-      <Routes>
-        <Route exact path="/" element={<MainPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/sendOTP" element={<OTPPage />} />
-      </Routes>
-    </div>
-  </Router>
-  </div>
-  </Flowbite>
-
+      <div className="dark:bg-cyan-800">
+        <Router>
+          <div>
+            <Header />
+            <Routes>
+              <Route exact path="/" element={<MainPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/sendOTP" element={<OTPPage />} />
+              <Route path="/Product" element={<ProductPage/>} />
+              <Route path="/invoices" element = {<StoreInvoices />} />
+            </Routes>
+          </div>
+        </Router>
+      </div>
+    </Flowbite>
   );
 }
 

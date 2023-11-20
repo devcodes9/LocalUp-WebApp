@@ -1,12 +1,15 @@
 const jwt = require("jsonwebtoken");
 // auth
 const auth = async (req, res, next) => {
+
   try {
+    // console.log(req)
     const token =
       req.cookies.token ||
       req.body.token ||
       req.header("Authorization").replace("Bearer ", "");
-
+    // console.log(req)
+    // console.log(token)
     if (!token) {
       return res
         .status(401)
@@ -27,7 +30,7 @@ const auth = async (req, res, next) => {
       .status(401)
       .json({
         success: false,
-        message: "Something went wrong while validating token",
+        message: err
       });
   }
 };
@@ -45,7 +48,7 @@ const isBuyer = async (req, res, next) => {
   } catch (err) {
     return res
       .status(401)
-      .json({ success: false, message: "Error while verifying user's role" });
+      .json({ success: false, message: err });
   }
 };
 
