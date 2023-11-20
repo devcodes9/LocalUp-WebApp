@@ -4,7 +4,7 @@ import FeatureCard from "./FeatureCard";
 const MainPage = () => {
   return (
     <div
-      className="h-[100vh]"
+      // className="h-[100vh]"
       // style={{ background: 'rgb(8,25,39)' }}
     >
       <div className="pt-[5%] w-[75%] m-auto">
@@ -68,10 +68,8 @@ const MainPage = () => {
           data-aos="zoom-in-up"
         >
           <FeatureCard
-            title="Convenience at Your Fingertips"
-            body="Say goodbye to the hassle of searching through multiple stores! Our
-            user-friendly platform allows you to search for your favorite
-            products from the comfort of your home"
+            title="Discover. Connect. Shop Local."
+            body="It provides convenience of shopping locally through your platform and it also emphasizes that customers can support local businesses without any hassle or complications."
           />
           <FeatureCard
             title="Convenience at Your Fingertips"
@@ -80,10 +78,8 @@ const MainPage = () => {
             products from the comfort of your home"
           />
           <FeatureCard
-            title="Convenience at Your Fingertips"
-            body="Say goodbye to the hassle of searching through multiple stores! Our
-            user-friendly platform allows you to search for your favorite
-            products from the comfort of your home"
+            title="Local Love, Global Impact."
+            body=" This idea speaks to the broader implications of supporting local businesses which leads users to contribute to a more sustainable and connected world."
           />
         </div>
       </div>

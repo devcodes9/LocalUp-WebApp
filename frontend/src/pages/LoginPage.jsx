@@ -23,10 +23,15 @@ const SignUpPage = () => {
 
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
-  
+  console.log("User info: ",userInfo)
   useEffect(() => {
     if (userInfo) {
-      navigate('/')
+      // Check if the user has a role and redirect accordingly
+      if (userInfo.existingUser && userInfo.existingUser.role === "store-owner") {
+        navigate('/product');
+      } else {
+        navigate('/');
+      }
     } 
   }, [navigate, userInfo]);
 

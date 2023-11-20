@@ -1,0 +1,18 @@
+.responsive{
+    width: 15%;
+    display: flex;
+}
+.fullWidth{
+    width: 85%;
+    padding-left: 10px;
+}
+@media (max-width: 998px) {
+    .responsive {
+      display: none;
+    }
+
+    .fullWidth{
+        width: 100%;
+        padding: 0;
+    }
+}
