@@ -121,32 +121,84 @@ const getAllProducts = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
-  try{
-    const id = req.params.id;
-    const product = await Product.findById(id);
+  try {
+    const productId = req.params.id;
+
+    // Find the product and store it for later use
+    const product = await Product.findById(productId);
 
     if (!product) {
-      return res.status(401).json({
+      return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
 
-    const deletedProduct = await Product.findByIdAndDelete(id);
-    
+    // Delete the product from the Product collection
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    // Delete the product from the Store's products array
+    const store = await Store.findOneAndUpdate(
+      { products: productId },
+      { $pull: { products: productId } },
+      { new: true }
+    );
+
+    if (!store) {
+      return res.status(404).json({
+        success: false,
+        message: "Store not found",
+      });
+    }
+
     return res.status(200).json({
       success: true,
       message: "Product deleted successfully",
-      data: deletedProduct
+      data: {
+        deletedProduct,
+        store,
+      },
     });
-  }
-  catch (err) {
+  } catch (err) {
     return res.status(500).json({
       success: false,
-      message: err.message
+      message: err.message,
     });
   }
-}
+};
 
 
-module.exports = { getAllProducts, getProduct, deleteProduct, createProduct, updateProduct};
+const searchProductBusiness = async (req, res) => {
+  try {
+    console.log("Req:", req);
+    const { query } = req.query;
+    const productSearchResults = await Product.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    });
+
+    const businessSearchResults = await Store.find({
+      $or: [{ name: { $regex: query, $options: "i" } }],
+    }).populate("products");
+
+    let results = productSearchResults;
+    businessSearchResults.forEach((res) => {
+      results = results.concat(res.products);
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Search results fetched successfully",
+      data: results,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { getAllProducts, getProduct, deleteProduct, createProduct, updateProduct, searchProductBusiness};
