@@ -8,7 +8,7 @@ import './productPage.css';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const ProductPage = () => {
+const InventoryPage = () => {
   const [productDetails, setProductDetails] = useState({
     name: '',
     category: '',
@@ -288,4 +288,4 @@ const handleEditProduct = (product) => {
   );
 };
 
-export default ProductPage;
+export default InventoryPage;
