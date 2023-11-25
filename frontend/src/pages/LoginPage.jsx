@@ -28,7 +28,7 @@ const SignUpPage = () => {
     if (userInfo) {
       // Check if the user has a role and redirect accordingly
       if (userInfo.existingUser && userInfo.existingUser.role === "store-owner") {
-        navigate('/product');
+        navigate('/inventory');
       } else {
         navigate('/');
       }

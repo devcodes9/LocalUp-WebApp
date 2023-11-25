@@ -4,11 +4,11 @@ import { HiArrowSmRight, HiChartPie, HiShoppingBag, HiUser } from 'react-icons/h
 import { BsEye } from 'react-icons/bs';
 import { MdDeleteOutline } from 'react-icons/md';
 import { BiEdit } from 'react-icons/bi';
-import './productPage.css';
+import './inventoryPage.css';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const ProductPage = () => {
+const InventoryPage = () => {
   const [productDetails, setProductDetails] = useState({
     name: '',
     category: '',
@@ -288,4 +288,4 @@ const handleEditProduct = (product) => {
   );
 };
 
-export default ProductPage;
+export default InventoryPage;

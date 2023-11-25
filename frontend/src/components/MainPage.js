@@ -1,23 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FeatureCard from "./FeatureCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
 import toast from 'react-hot-toast'
+import Axios from "axios";
 
 const MainPage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const submitHandler = async (e) => {
-    e.preventDefault()
+  const [searchData, setSearchData] = useState(null); // New state to store search results
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const submitHandler = async (e) => {
+    
+    e.preventDefault();
     try {
-      if(!userInfo){
+      if (!userInfo) {
         navigate('/login');
+      } else {
+        const response = await Axios.get(`http://localhost:8080/api/v1/product?query=${searchQuery}`, { withCredentials: true });
+  
+        const data = response.data; // Access the data directly
+        setSearchData(data, () => {
+          console.log("searchData: ", searchData);
+          navigate('/Product', { state: { searchData: data } });
+        });
       }
     } catch (error) {
-      toast.error(error?.data?.message || error.error);
+      console.error('Error in submitHandler:', error);
+  
+      toast.error(
+        error?.data?.message || error.message || 'An error occurred.'
+      );
     }
-  }
+  };
+  
+  useEffect(() => {
+    if (searchData !== null) {
+      console.log("searchData: ", searchData);
+      navigate('/Product', { state: { searchData } });
+    }
+  }, [searchData,navigate]);
   return (
     <div
       // className="h-[100vh]"
@@ -66,6 +89,7 @@ const MainPage = () => {
             </div>
             <input
               type="search"
+              onChange={(e)=>setSearchQuery(e.target.value)}
               id="default-search"
               className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Seach Product Name, Company Name, or by Stores"
