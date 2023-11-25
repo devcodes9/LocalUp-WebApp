@@ -178,7 +178,7 @@ const searchProductBusiness = async (req, res) => {
         { name: { $regex: query, $options: "i" } },
         { description: { $regex: query, $options: "i" } },
       ],
-    });
+    }).populate('store');
 
     const businessSearchResults = await Store.find({
       $or: [{ name: { $regex: query, $options: "i" } }],
@@ -186,6 +186,7 @@ const searchProductBusiness = async (req, res) => {
 
     let results = productSearchResults;
     businessSearchResults.forEach((res) => {
+      
       results = results.concat(res.products);
     });
 

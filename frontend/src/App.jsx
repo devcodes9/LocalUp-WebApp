@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import OTPPage from "./pages/OTPPage";
 import InventoryPage from "./components/InventoryPage";
 import StoreInvoices from "./pages/StoreInvoices";
+import ProductPage from "./components/ProductPage";
 
 function App() {
   const url =
@@ -26,8 +27,9 @@ function App() {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/sendOTP" element={<OTPPage />} />
-              <Route path="/Product" element={<InventoryPage/>} />
+              <Route path="/Inventory" element={<InventoryPage/>} />
               <Route path="/invoices" element = {<StoreInvoices />} />
+              <Route path="/Product" element = {<ProductPage />} />
             </Routes>
           </div>
         </Router>
