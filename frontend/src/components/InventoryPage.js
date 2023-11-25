@@ -7,6 +7,7 @@ import { BiEdit } from 'react-icons/bi';
 import './inventoryPage.css';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
+import { getBaseURL } from '../utils/url';
 
 const InventoryPage = () => {
   const [productDetails, setProductDetails] = useState({
@@ -30,7 +31,7 @@ const InventoryPage = () => {
       [name]: value,
     }));
   };
-
+  const url = getBaseURL();
   const handleAddProduct = async () => {
     // setProducts((prevProducts) => [...prevProducts, productDetails]);
 
@@ -57,7 +58,7 @@ const InventoryPage = () => {
     // };
 
     try {
-      const response = await Axios.post("http://localhost:8080/api/v1/product/createproduct", requestBody, { withCredentials: true });
+      const response = await Axios.post(`${url}/api/v1/product/createproduct`, requestBody, { withCredentials: true });
   
       if (response.status === 200) {
         setProduct((prevProduct) => [...prevProduct, productDetails]);
@@ -79,7 +80,7 @@ const InventoryPage = () => {
 
   useEffect(() => {
     
-    Axios.get(`http://localhost:8080/api/v1/store/products/${userInfo.existingUser._id}`, { withCredentials: true })
+    Axios.get(`${url}/api/v1/store/products/${userInfo.existingUser._id}`, { withCredentials: true })
       .then((response) => {
         if (response.status === 200) {
           setProduct(response.data.data);
@@ -94,7 +95,7 @@ const InventoryPage = () => {
 
   const handleDeleteProduct = async (productId) => {
     try {
-      const response = await Axios.delete(`http://localhost:8080/api/v1/product/${productId}`, { withCredentials: true });
+      const response = await Axios.delete(`${url}/api/v1/product/${productId}`, { withCredentials: true });
   
       if (response.status === 200) {
         const updatedProducts = product.filter((p) => p._id !== productId);

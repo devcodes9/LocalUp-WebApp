@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
 import toast from 'react-hot-toast'
 import Axios from "axios";
+import { getBaseURL } from "../utils/url";
 
 const MainPage = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -18,7 +19,8 @@ const MainPage = () => {
       if (!userInfo) {
         navigate('/login');
       } else {
-        const response = await Axios.get(`http://localhost:8080/api/v1/product?query=${searchQuery}`, { withCredentials: true });
+        const url = getBaseURL();
+        const response = await Axios.get(`${url}/api/v1/product?query=${searchQuery}`, { withCredentials: true });
   
         const data = response.data; // Access the data directly
         setSearchData(data, () => {
